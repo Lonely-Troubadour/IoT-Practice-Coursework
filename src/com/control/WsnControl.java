@@ -1,7 +1,7 @@
 package com.control;
 
 import com.GUI.Gui;
-import com.serialport.ui.SerialController;
+import com.serialport.control.SerialController;
 
 public class WsnControl implements Runnable {
 	private Gui gui;
@@ -14,7 +14,7 @@ public class WsnControl implements Runnable {
 	public void run() {
 		this.serialController.setOnDataAvailableListener(new SerialController.OnDataAvailableListener() {
 			@Override
-			public void onDataAvailable(double temperature, double humiliation, double illumination) {
+			public void onDataAvailable(String addr, double temperature, double humiliation, double illumination) {
 				gui.update_env(addr, temperature, humiliation, illumination);
 			}
 		});

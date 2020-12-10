@@ -65,19 +65,19 @@ public class EnvMonitorPanel extends JPanel {
 		
 		scrollDataView.setBounds(0, 0, 655, 400);
 		
-//		JButton btn = new JButton();
-//		btn.setBounds(100, 100, 30, 30);
-//		btn.addActionListener(e -> {
-//			this.update_env("b123", 1, 1, 1);
-//		});
-//		add(btn);
-//		
-//		JButton btn2 = new JButton();
-//		btn2.setBounds(140, 140, 30, 30);
-//		btn2.addActionListener(e -> {
-//			this.update_env("b321", 1, 1, 1);
-//		});
-//		add(btn2);
+		JButton btn = new JButton();
+		btn.setBounds(100, 100, 30, 30);
+		btn.addActionListener(e -> {
+			this.update_env("b123", 1, 1, 1);
+		});
+		add(btn);
+		
+		JButton btn2 = new JButton();
+		btn2.setBounds(140, 140, 30, 30);
+		btn2.addActionListener(e -> {
+			this.update_env("b321", 1, 1, 1);
+		});
+		add(btn2);
 		add(scrollDataView);
 	}
 	

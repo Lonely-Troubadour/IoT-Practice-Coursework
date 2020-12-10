@@ -2,14 +2,17 @@ package com.GUI;
 
 import com.control.RfidControl;
 import com.control.WsnControl;
-import com.serialport.ui.SerialController;
+import com.serialport.control.SerialController;
 import com.uhf.demo.DatabaseController;
 import com.uhf.demo.UhfDemo;
 
+import javax.imageio.ImageIO;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.image.BufferedImage;
+import java.io.File;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
@@ -30,6 +33,7 @@ public class Gui extends JFrame {
 	// Labels
 	private JLabel timeLabel;
 	private JLabel titleLabel;
+	private JLabel logoLabel;
 	
 	// timer
 	private Timer time;
@@ -57,7 +61,7 @@ public class Gui extends JFrame {
 		setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 		Point p = GraphicsEnvironment.getLocalGraphicsEnvironment().getCenterPoint();
 		setBounds(p.x - WIDTH/2, p.y - HEIGHT/2, WIDTH, HEIGHT);
-		setTitle("Group 13");
+		setTitle("Umbrella Corp. Admin Terminal");
 		getContentPane().setLayout(new BorderLayout());
 		
 		
@@ -65,10 +69,20 @@ public class Gui extends JFrame {
 		WelcomePanel = new JPanel();
 		WelcomePanel.setBounds(0, 0, 680, 50);
 		
-		titleLabel = new JLabel("Aparture Laboratory");
+		// logo
+		try {
+			BufferedImage logo = ImageIO.read(new File("img/logo.jpeg"));
+			logoLabel = new JLabel(new ImageIcon(logo));
+		} catch (Exception e) {
+			System.err.println(e.getMessage());
+		}
+		
+		
+		titleLabel = new JLabel("BUPT Laboratory, Group 13");
 		titleLabel.setFont(new Font("Lucida Grande", Font.PLAIN, 24));
 		titleLabel.setHorizontalAlignment(SwingConstants.CENTER);
 		
+		WelcomePanel.add(logoLabel);
 		WelcomePanel.add(titleLabel);
 		getContentPane().add(WelcomePanel, BorderLayout.NORTH);
 		

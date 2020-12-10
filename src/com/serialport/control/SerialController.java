@@ -4,7 +4,7 @@
  * Created on 2016.8.19
  */
 
-package com.serialport.ui;
+package com.serialport.control;
 
 import com.serialport.exception.*;
 import com.serialport.manage.SerialPortManager;
@@ -20,16 +20,16 @@ import java.util.Date;
 public class SerialController {    
 	//两个串口
 	private SerialPort WSNserialport;
-	private SerialPort A9serialport;
+	private SerialPort Arduinoserialport;
 	private static final int WSNbaudrate = 115200;
 	private static final String WSNcommName = "COM6";
-	private static final int A9baudrate = 9600;
-	private static final String A9commName = "COM5";
+	private static final int Arduinobaudrate = 9600;
+	private static final String ArduinocommName = "COM5";
 	private OnDataAvailableListener onDataAvailableListener;
 
 	public SerialController() {
 		openWSNSerialPort();
-		openA9SerialPort();
+		openArduinoSerialPort();
 	}
 
 	private void openWSNSerialPort() {
@@ -65,11 +65,11 @@ public class SerialController {
 				ShowUtils.errorMessage("与串口设备通讯中断");
 				break;
 			case SerialPortEvent.OE: // 7 溢位（溢出）错误
-			case SerialPortEvent.FE: // 9 帧错误
+			case SerialPortEvent.FE: // 9 帧错�?
 			case SerialPortEvent.PE: // 8 奇偶校验错误
-			case SerialPortEvent.CD: // 6 载波检测
-			case SerialPortEvent.CTS: // 3 清除待发送数据
-			case SerialPortEvent.DSR: // 4 待发送数据准备好了
+			case SerialPortEvent.CD: // 6 载波�?�?
+			case SerialPortEvent.CTS: // 3 清除待发送数�?
+			case SerialPortEvent.DSR: // 4 待发送数据准备好�?
 			case SerialPortEvent.RI: // 5 振铃指示
 			case SerialPortEvent.OUTPUT_BUFFER_EMPTY: // 2 输出缓冲区已清空
 				break;
@@ -83,13 +83,14 @@ public class SerialController {
 						data = SerialPortManager.readFromPort(WSNserialport);
 
 						Message m = parseMessage(ByteUtils.byteArrayToHexString(data, false));
+						String shortAddr = m.getShortAddress();
 						double temperature = DataConverter.temperatureConvert(m.getTemperature());
 						double humiliation = DataConverter.humiliationConvert(m.getHumiliation(), temperature);
 						double illumination = DataConverter.illuminationConvert(m.getIllumination());
-						System.out.println("温度："+temperature+"	湿度："+humiliation+"	光照："+illumination);
+						System.out.println("温度："+temperature+"，湿度："+humiliation+"，光照："+illumination);
 						
-						onDataAvailableListener.onDataAvailable(temperature, humiliation, illumination);
-						sendData(A9serialport, m.getTemperature()+m.getHumiliation()+m.getIllumination());
+						onDataAvailableListener.onDataAvailable(shortAddr, temperature, humiliation, illumination);
+						sendData(Arduinoserialport, m.getTemperature()+m.getHumiliation()+m.getIllumination());
 					}
 				} catch (Exception e) {
 					ShowUtils.errorMessage(e.toString());
@@ -101,18 +102,18 @@ public class SerialController {
 	}
 	
 	public interface OnDataAvailableListener {
-		void onDataAvailable(double temperature, double humiliation, double illumination);
+		void onDataAvailable(String shortAddr, double temperature, double humiliation, double illumination);
 	}
 	
 	public void setOnDataAvailableListener(OnDataAvailableListener onDataAvailableListener) {
 		this.onDataAvailableListener = onDataAvailableListener;
 	}
 
-	private void openA9SerialPort() {
+	private void openArduinoSerialPort() {
 		try {
-			A9serialport = SerialPortManager.openPort(A9commName, A9baudrate);
-			if (A9serialport != null) {
-				System.out.println("成功打开A9串口");
+			Arduinoserialport = SerialPortManager.openPort(ArduinocommName, Arduinobaudrate);
+			if (Arduinoserialport != null) {
+				System.out.println("成功打开Arduino串口");
 			}
 		} catch (SerialPortParameterFailure e) {
 			e.printStackTrace();
@@ -124,13 +125,13 @@ public class SerialController {
 			e.printStackTrace();
 		}
 //		try {
-//			SerialPortManager.addListener(A9serialport, new A9SerialListener());
+//			SerialPortManager.addListener(Arduinoserialport, new ArduinoSerialListener());
 //		} catch (TooManyListeners e) {
 //			e.printStackTrace();
 //		}
 	}
 
-//	private class A9SerialListener implements SerialPortEventListener {
+//	private class ArduinoSerialListener implements SerialPortEventListener {
 //		/**
 //		 * serialEvent
 //		 * 处理监控到的串口事件 Handle monitored serial port events
@@ -138,25 +139,25 @@ public class SerialController {
 //		public void serialEvent(SerialPortEvent serialPortEvent) {
 //			switch (serialPortEvent.getEventType()) {
 //				case SerialPortEvent.BI: // 10 通讯中断
-//					ShowUtils.errorMessage("与串口设备通讯中断");
+//					ShowUtils.errorMessage("与串口设备�?�讯中断");
 //					break;
 //				case SerialPortEvent.OE: // 7 溢位（溢出）错误
-//				case SerialPortEvent.FE: // 9 帧错误
+//				case SerialPortEvent.FE: // 9 帧错�?
 //				case SerialPortEvent.PE: // 8 奇偶校验错误
-//				case SerialPortEvent.CD: // 6 载波检测
-//				case SerialPortEvent.CTS: // 3 清除待发送数据
-//				case SerialPortEvent.DSR: // 4 待发送数据准备好了
+//				case SerialPortEvent.CD: // 6 载波�?�?
+//				case SerialPortEvent.CTS: // 3 清除待发送数�?
+//				case SerialPortEvent.DSR: // 4 待发送数据准备好�?
 //				case SerialPortEvent.RI: // 5 振铃指示
 //				case SerialPortEvent.OUTPUT_BUFFER_EMPTY: // 2 输出缓冲区已清空
 //					break;
 //				case SerialPortEvent.DATA_AVAILABLE: // 1 串口存在可用数据
 //					byte[] data = null;
 //					try {
-//						if (A9serialport == null) {
+//						if (Arduinoserialport == null) {
 //							ShowUtils.errorMessage("串口对象为空！监听失败！");
 //						} else {
 //							// 读取串口数据
-//							data = SerialPortManager.readFromPort(A9serialport);
+//							data = SerialPortManager.readFromPort(Arduinoserialport);
 //
 //							System.out.println(ByteUtils.fromHexString(ByteUtils.byteArrayToHexString(data, false)));
 //						}
@@ -171,7 +172,7 @@ public class SerialController {
 
 	public void closeSerialPort(SerialPort serialport) {
 		SerialPortManager.closePort(serialport);
-		System.out.println(serialport.getName() + "串口已关闭");
+		System.out.println(serialport.getName() + "串口已关�?");
 		serialport = null;
 	}
 

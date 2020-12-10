@@ -1,4 +1,4 @@
-package com.serialport.ui;
+package com.serialport.control;
 
 import java.util.Date;
 
