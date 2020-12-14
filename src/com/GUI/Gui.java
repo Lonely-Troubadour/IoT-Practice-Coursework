@@ -113,6 +113,10 @@ public class Gui extends JFrame {
 		time.start();
 		getContentPane().add(timeLabel, BorderLayout.SOUTH);
 		
+//		update_epcName("007A0000000000003D225A6D0000000000000000:Alice");
+//		update_env("B623", 28, 10, 100);
+		
+		
 		
 //		start_rfid();
 //		start_wsn();
