@@ -43,7 +43,7 @@ public class UhfDemo {
 								.byteToHexString(rwData.epc, rwData.epcLen);
 					}
 					
-					String checkResult = this.dbController.checkIdentity(epc);
+					String checkResult = this.dbController.checkIdentity(result);
 					if(checkResult!=null){
 						System.out.println("result====" + result);// 3200
 						System.out.println("epc====" + epc);// 320030007F263000DDD90140
