@@ -26,8 +26,8 @@ public class IdCheckPanel extends JPanel {
 		epcLable = new JLabel("Epc: ");
 		nameLabel = new JLabel("Name: ");
 		
-		epcLable.setFont(new Font("American Typewriter", Font.PLAIN, 18));
-		nameLabel.setFont(new Font("American Typewriter", Font.PLAIN, 18));
+		epcLable.setFont(new Font("Helvetica", Font.PLAIN, 24));
+		nameLabel.setFont(new Font("Helvetica", Font.PLAIN, 24));
 		
 		idPanel.setLayout(null);
 		epcLable.setBounds(150, 0, 500, 100);
